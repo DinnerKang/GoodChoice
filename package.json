@@ -24,7 +24,9 @@
     "body-parse": "^0.1.0",
     "concurrently": "^4.1.0",
     "cors": "^2.8.5",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "mongodb": "^3.2.4",
+    "mongoose": "^5.5.7"
   },
   "devDependencies": {
     "nodemon": "^1.19.0"
