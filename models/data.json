@@ -1,0 +1,38 @@
+[
+    {
+        "name" : "잠실 첼로",
+        "type" : "auto",
+        "reservation" : true,
+        "maxPersonnel" : 4,
+        "shortPrice" : 25000,
+        "longPrice" : 30000,
+        "event" : ["PayBack", "InfiniteRoom"]
+    },
+    {
+        "name" : "노원 빠삐용",
+        "type" : "glam",
+        "reservation" : true,
+        "maxPersonnel" : 5,
+        "shortPrice" : 40000,
+        "longPrice" : 70000,
+        "event" : ["PayBack"]
+    },
+    {
+        "name" : "군자 테마",
+        "type" : "karaban",
+        "reservation" : false,
+        "maxPersonnel" : 2,
+        "shortPrice" : 10000,
+        "longPrice" : 15000,
+        "event" : ["InfiniteRoom"]
+    },
+    {
+        "name" : "건대 뮤",
+        "type" : "karaban",
+        "reservation" : false,
+        "maxPersonnel" : 2,
+        "shortPrice" : 20000,
+        "longPrice" : 35000,
+        "event" : []
+    }
+]
