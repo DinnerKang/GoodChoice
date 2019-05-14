@@ -14,6 +14,10 @@ class Main extends Component{
             startDate: '',
             endDate: '',
             rangeValue: { min: 1, max: 30},
+            reservation : false,
+            autoCamp: false,
+            glam: false,
+            karaban : false,
             option_people: 1
         };
     }
@@ -28,13 +32,52 @@ class Main extends Component{
             endDate: date
         })
     }
+    clickCheckbox = (e) =>{
+        const name = e.target.name;
+        let value;
+        if(name === 'reservation'){
+            value = this.state.reservation;
+        }else if(name === 'autoCamp'){
+            value = this.state.autoCamp;
+        }
+        this.setState({
+            [name] : !value
+        });
+    }
+    resetBtn = () =>{
+        this.setState({
+            startDate : '',
+            endDate: '',
+            rangeValue: { min: 1, max: 30},
+            reservation : false,
+            autoCamp: false,
+            glam: false,
+            karaban : false,
+            option_people: 1,
+        })
+    }
+    submitBtn = () =>{
+        const startDate = this.state.startDate;
+        const endDate = this.state.endDate;
+        const minPrice = this.state.rangeValue.min;
+        const maxPrice = this.state.rangeValue.max;
+        const reservation = this.state.reservation;
+        let type= [];
+        const people = this.state.option_people;
+
+        if(this.state.autoCamp) type.push('auto');
+        if(this.state.glam) type.push('glam');
+        if(this.state.karaban) type.push('karaban');
+        
+    }
+    
     render(){
         return(
             <Fragment>
                 <header className="main_header">
                     <img className="header_img" src={this.state.mainImg} alt="backgorund"></img>
                 </header>
-                <section >
+                <section>
                     <article className="option_container">
                         <div className="option_list">
                             <div className="align_center">
@@ -73,44 +116,46 @@ class Main extends Component{
                         </div>
                         <div className="option_list">
                             <div className="align_center">
-                                <label>
-                                    <input type="checkbox" value="예약가능"/>예약 가능
-                                    </label>
+                               
+                                    <input type="checkbox" value="reservation" name="reservation" id="reservation" onClick={this.clickCheckbox}/>
+                                    <label  className="option_type" htmlFor="reservation" >예약 가능</label>
                             </div>
                         </div>
                         <div className="option_list">
                             <div className="align_center">
                                 <ul>
                                     <li>
-                                        <label>
-                                            <input type="checkbox" value="오토캠핑"/>오토캠핑
-                                        </label>
+                                        <input type="checkbox" value="autoCamp"  name="autoCamp" id="autoCamp" onClick={this.clickCheckbox}/>
+                                        <label className="option_type" htmlFor="autoCamp">오토캠핑</label>
                                     </li>
                                     <li>
-                                        <label>
-                                            <input type="checkbox" value="글램핑"/>글램핑
-                                        </label>
+                                        <input type="checkbox" value="glam" name="glam" id="glam" onClick={this.clickCheckbox}/>
+                                        <label className="option_type" htmlFor="glam">글램핑</label>
                                     </li>
                                     <li>
-                                        <label>
-                                            <input type="checkbox" value="카라반"/>카라반
-                                        </label>
+                                        <input type="checkbox" value="karaban" name="karaban" id="karaban" onClick={this.clickCheckbox}/>
+                                        <label  className="option_type" htmlFor="karaban">카라반</label>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div className="option_list">
                             <div className="align_center"> 
-                                <input type="button" value="-" onClick={ () => {
+                                <input className="people_btn" type="button" value="-" onClick={ () => {
                                     if(this.state.option_people ===1){
                                         return;
                                     }
                                     this.setState({option_people : this.state.option_people-1})}
                                     }/>
                                     인원 : {this.state.option_people}
-                                <input type="button" value="+"  onClick={ () => this.setState({option_people : this.state.option_people+1})}/>
+                                <input className="people_btn" type="button" value="+" 
+                                onClick={ () => this.setState({option_people : this.state.option_people+1})}/>
                             </div>
                         </div>
+                    </article>
+                    <article className="button_container">
+                        <input className="option_btn" type="button" value="초기화" onClick={this.resetBtn}/>
+                        <input className="option_btn" type="button" value="적용" onClick={this.submitBtn}/>
                     </article>
                 </section>
             </Fragment>

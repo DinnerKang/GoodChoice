@@ -17,13 +17,13 @@ ul, li{
     height: 80px;
     border : 1px solid #f7323f;
     border-top : 10px #f7323f solid;
-    margin: 50px auto;
+    margin: 50px auto 20px;
     border-radius: 15px;
 }
 .option_list{
     float :left;
     height: 100%;
-    margin: 0 10px;
+    margin: 0 20px;
 }
 .price_label{
     position: absolute;
@@ -35,11 +35,14 @@ ul, li{
 }
 .option_price{
     position: relative;
-    width: 250px;
+    width: 350px;
 }
 input[type="text"]{
     border: none;
     text-align: center;
+}
+.option_type{
+    cursor: pointer;
 }
 .input-range__slider, .input-range__track--active{
     border: #f7323f !important;
@@ -49,4 +52,32 @@ input[type="text"]{
     display: flex;
     height: 100%;
     align-items: center;
+}
+.people_btn{
+    border:none;
+    background-color: #fff;
+    color : #f7323f;
+    font-size: 20px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.button_container{
+    width: 1200px;
+    margin: 0 auto;
+    text-align: right;
+}
+.option_btn{
+    background-color: #f7323f;
+    color: #fff;
+    width: 160px;
+    height: 60px;
+    margin-left: 30px;
+    border: 1px solid #f7323f;
+    cursor: pointer;
+    transition: all 1s;
+}
+.option_btn:hover{
+    background-color: #fff;
+    color: #f7323f;
 }
