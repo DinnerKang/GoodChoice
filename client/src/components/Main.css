@@ -25,6 +25,17 @@ ul, li{
     height: 100%;
     margin: 0 20px;
 }
+.option_date{
+    position: relative;
+}
+.betweenDay_label{
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    font-weight: bold;
+}
 .price_label{
     position: absolute;
     top: 5px;

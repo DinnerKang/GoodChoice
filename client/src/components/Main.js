@@ -19,19 +19,28 @@ class Main extends Component{
             autoCamp: false,
             glam: false,
             karaban : false,
-            option_people: 1
+            option_people: 1,
+            betweenDay: 0
         };
     }
 
     handleChangeStart = (date) =>{
         this.setState({
-            startDate: date
-        })
+            startDate: date,
+            endDate: '',
+            betweenDay: 0
+        });
     }
     handleChangeEnd = (date) =>{
         this.setState({
             endDate: date
-        })
+        }, function(){
+            // 숙박일수
+            if(this.state.startDate){
+                const betweenDay = (this.state.endDate.getTime() - this.state.startDate.getTime())/1000/60/60/24;
+                this.setState({ betweenDay : betweenDay });
+            }
+        });
     }
     clickCheckbox = (e) =>{
         const name = e.target.name;
@@ -71,6 +80,7 @@ class Main extends Component{
         let type= [];
         const people = this.state.option_people;
 
+        if(!this.state.startDate || !this.state.endDate) return alert('입실 날짜와 퇴실 날짜를 입력해주세요.');
 
 
         function changeDate(date, during){
@@ -84,7 +94,6 @@ class Main extends Component{
         }
 
         const betweenDay = (this.state.endDate.getTime() - this.state.startDate.getTime())/1000/60/60/24;
-
         for(let i=0,len=betweenDay; i<len ;i++){
             duringDay.push(changeDate(this.state.startDate, i));
         }
@@ -102,6 +111,12 @@ class Main extends Component{
     }
     
     render(){
+        let duringDay;
+        if(this.state.betweenDay ===0){
+            duringDay = '';
+        }else{
+            duringDay = <label className="betweenDay_label">{this.state.betweenDay} 박 {this.state.betweenDay+1} 일</label>
+        }
         return(
             <Fragment>
                 <header className="main_header">
@@ -110,7 +125,8 @@ class Main extends Component{
                 <section>
                     <article className="option_container">
                         <div className="option_list">
-                            <div className="align_center">
+                            <div className="align_center option_date">
+                                {duringDay}
                                 <DatePicker
                                     dateFormat="YYYY-MM-dd"
                                     placeholderText="입실 날짜"
