@@ -1,0 +1,18 @@
+
+
+.main_header{
+    text-align: center;
+    background-color: #f7323f;
+    height: 454px;
+}
+.header_img{
+    height: 454px;
+}
+.option_container{
+    width: 1200px;
+    height: 80px;
+    border : 1px solid #f7323f;
+    border-top : 10px #f7323f solid;
+    margin: 50px auto;
+    border-radius: 15px;
+}

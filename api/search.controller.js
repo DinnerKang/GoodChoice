@@ -20,7 +20,7 @@ exports.searchRooms = (req, res) =>{
     const roomMaxPersonnel = req.body.maxPersonnel;
     const roomPrice = req.body.price;
 
-    console.log(roomType);
+    
     Room.find({
         reservation : roomReservation,
         type : {$in : roomType},
