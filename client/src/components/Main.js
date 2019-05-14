@@ -6,6 +6,7 @@ import './Main.css';
 import "react-datepicker/dist/react-datepicker.css";
 import "react-input-range/lib/css/index.css";
 
+import axios from 'axios';
 class Main extends Component{
     constructor(props){
         super(props);
@@ -39,6 +40,10 @@ class Main extends Component{
             value = this.state.reservation;
         }else if(name === 'autoCamp'){
             value = this.state.autoCamp;
+        }else if(name === 'glam'){
+            value = this.state.glam;
+        }else if(name === 'karaban'){
+            value = this.state.karaban;
         }
         this.setState({
             [name] : !value
@@ -54,20 +59,45 @@ class Main extends Component{
             glam: false,
             karaban : false,
             option_people: 1,
-        })
+        });
+
     }
-    submitBtn = () =>{
-        const startDate = this.state.startDate;
-        const endDate = this.state.endDate;
+    submitBtn = async() =>{
+        // 옵션 
+        let duringDay = [];
         const minPrice = this.state.rangeValue.min;
         const maxPrice = this.state.rangeValue.max;
         const reservation = this.state.reservation;
         let type= [];
         const people = this.state.option_people;
 
+
+
+        function changeDate(date, during){
+            let newDate = new Date(date);
+            newDate.setDate(newDate.getDate()+ during);
+
+            const dd = ("0" + newDate.getDate()).slice(-2);
+            const mm = ("0"+ (newDate.getMonth() + 1)).slice(-2);
+            const yy = newDate.getFullYear();
+            return Number(yy+mm+dd);
+        }
+
+        const betweenDay = (this.state.endDate.getTime() - this.state.startDate.getTime())/1000/60/60/24;
+
+        for(let i=0,len=betweenDay; i<len ;i++){
+            duringDay.push(changeDate(this.state.startDate, i));
+        }
+
         if(this.state.autoCamp) type.push('auto');
         if(this.state.glam) type.push('glam');
         if(this.state.karaban) type.push('karaban');
+        
+
+
+        let searchResult = await axios.post(`http://localhost:5000/search/option`, 
+                                    {duringDay, minPrice,  maxPrice, reservation, type, people});
+        console.log(searchResult);
         
     }
     
@@ -95,7 +125,7 @@ class Main extends Component{
                                 <DatePicker
                                     dateFormat="YYYY-MM-dd"
                                     placeholderText="퇴실 날짜"
-                                    minDate={new Date()}
+                                    minDate={this.state.startDate}
                                     selected={this.state.endDate}
                                     selectsEnd
                                     startDate={this.state.startDate}
@@ -116,8 +146,8 @@ class Main extends Component{
                         </div>
                         <div className="option_list">
                             <div className="align_center">
-                               
-                                    <input type="checkbox" value="reservation" name="reservation" id="reservation" onClick={this.clickCheckbox}/>
+                                    <input type="checkbox" value="reservation" name="reservation" id="reservation" 
+                                    onClick={this.clickCheckbox} checked={this.state.reservation}/>
                                     <label  className="option_type" htmlFor="reservation" >예약 가능</label>
                             </div>
                         </div>
@@ -125,15 +155,18 @@ class Main extends Component{
                             <div className="align_center">
                                 <ul>
                                     <li>
-                                        <input type="checkbox" value="autoCamp"  name="autoCamp" id="autoCamp" onClick={this.clickCheckbox}/>
+                                        <input type="checkbox" value="autoCamp"  name="autoCamp" id="autoCamp" 
+                                        onClick={this.clickCheckbox} checked={this.state.autoCamp}/>
                                         <label className="option_type" htmlFor="autoCamp">오토캠핑</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" value="glam" name="glam" id="glam" onClick={this.clickCheckbox}/>
+                                        <input type="checkbox" value="glam" name="glam" id="glam"
+                                        onClick={this.clickCheckbox} checked={this.state.glam}/>
                                         <label className="option_type" htmlFor="glam">글램핑</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" value="karaban" name="karaban" id="karaban" onClick={this.clickCheckbox}/>
+                                        <input type="checkbox" value="karaban" name="karaban" id="karaban" 
+                                        onClick={this.clickCheckbox} checked={this.state.karaban}/>
                                         <label  className="option_type" htmlFor="karaban">카라반</label>
                                     </li>
                                 </ul>

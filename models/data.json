@@ -4,7 +4,7 @@
         "type" : "auto",
         "reservation" : true,
         "maxPersonnel" : 4,
-        "possibleDate" : ["2019-06-01", "2019-06-02", "2019-06-03", "2019-06-04"],
+        "possibleDate" : [20190602,20190603],
         "price" : 30000
     },
     {

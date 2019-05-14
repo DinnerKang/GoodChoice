@@ -5,7 +5,7 @@ let RoomSchema = mongoose.Schema({
     type: {type :String},
     reservation :  {type :Boolean},
     maxPersonnel : {type : Number },
-    possibleDate : {type : [String] },
+    possibleDate : {type : [Number] },
     price : {type : Number}
 });
 
