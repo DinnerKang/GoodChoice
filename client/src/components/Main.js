@@ -25,8 +25,8 @@ class Main extends Component{
             option_people: 1,
             betweenDay: 0,
 
-            from : undefined,
-            to: undefined,
+            from : null,
+            to: null,
         };
     }
 
@@ -114,10 +114,28 @@ class Main extends Component{
                                     {duringDay, minPrice,  maxPrice, reservation, type, people});
         console.log(searchResult);
     }
-
+    dayClick = () =>{
+        if(this.refs.dayPicker.style.display === 'block'){
+            this.refs.dayPicker.style.display = 'none'
+        }else{
+            this.refs.dayPicker.style.display = 'block'
+        }
+    }
     handleDayClick = (day) => {
+       
         const range = DateUtils.addDayToRange(day, this.state);
+        console.log(range);
         this.setState(range);
+       
+        if(range.from && !range.to){
+            let nextDay = new Date(range.from);
+            nextDay = new Date(nextDay.setDate( nextDay.getDate() +1));
+            
+            this.setState({
+               to : nextDay
+            });
+            
+        }
     }
     
     render(){
@@ -179,7 +197,7 @@ class Main extends Component{
                         <div className="option_list">
                             <div className="align_center">
                                     <input type="checkbox" value="reservation" name="reservation" id="reservation" 
-                                    onClick={this.clickCheckbox} checked={this.state.reservation} />
+                                    onClick={this.clickCheckbox} checked={this.state.reservation} readOnly />
                                     <label  className="option_type" htmlFor="reservation" >예약 가능</label>
                             </div>
                         </div>
@@ -188,17 +206,17 @@ class Main extends Component{
                                 <ul>
                                     <li>
                                         <input type="checkbox" value="autoCamp"  name="autoCamp" id="autoCamp" 
-                                        onClick={this.clickCheckbox} checked={this.state.autoCamp}/>
+                                        onClick={this.clickCheckbox} checked={this.state.autoCamp} readOnly />
                                         <label className="option_type" htmlFor="autoCamp">오토캠핑</label>
                                     </li>
                                     <li>
                                         <input type="checkbox" value="glam" name="glam" id="glam"
-                                        onClick={this.clickCheckbox} checked={this.state.glam}/>
+                                        onClick={this.clickCheckbox} checked={this.state.glam} readOnly />
                                         <label className="option_type" htmlFor="glam">글램핑</label>
                                     </li>
                                     <li>
                                         <input type="checkbox" value="karaban" name="karaban" id="karaban" 
-                                        onClick={this.clickCheckbox} checked={this.state.karaban}/>
+                                        onClick={this.clickCheckbox} checked={this.state.karaban} readOnly />
                                         <label  className="option_type" htmlFor="karaban">카라반</label>
                                     </li>
                                 </ul>
@@ -223,14 +241,22 @@ class Main extends Component{
                         <input className="option_btn" type="button" value="적용" onClick={this.submitBtn}/>
                     </article>
                     <div>
-                        <input type="text" className="DayPicker_text" placeholder="입실 날짜 ~ 퇴실 날짜" readOnly/>
-                        <DayPicker 
-                            className="Selectable"
-                            numberOfMonths={this.props.numberOfMonths}
-                            selectedDays={[from, { from, to }]}
-                            modifiers={modifiers}
-                            onDayClick={this.handleDayClick} 
-                        />
+                        <input type="text" className="DayPicker_text" placeholder="입실 날짜 ~ 퇴실 날짜" readOnly
+                        onClick={this.dayClick}/>
+                        <div className="dayPicker_container" ref="dayPicker">
+                            <DayPicker
+                                className="Selectable"
+                                numberOfMonths={this.props.numberOfMonths}
+                                selectedDays={[from, { from, to }]}
+                                modifiers={modifiers}
+                                onDayClick={this.handleDayClick}
+                                disabledDays={[
+                                    { before : new Date()}
+                                ]}
+                            />
+                            <input type="button" />
+                        </div>
+                        
                     </div>
                 </section>
             </Fragment>
