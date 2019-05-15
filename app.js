@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 app.use('/search', require('./api/search'));
 
 app.listen(port, () => {
-  //  connectDB();
+    connectDB();
     console.log('서버 시작');
 });
 

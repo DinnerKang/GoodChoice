@@ -1,13 +1,12 @@
 import React, { Component, Fragment }from 'react';
-import DatePicker from "react-datepicker";
+
 import InputRange from 'react-input-range';
+import "react-input-range/lib/css/index.css";
 
 import DayPicker, { DateUtils  } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
 import './Main.css';
-import "react-datepicker/dist/react-datepicker.css";
-import "react-input-range/lib/css/index.css";
 
 import axios from 'axios';
 class Main extends Component{
@@ -24,13 +23,14 @@ class Main extends Component{
             karaban : false,
             option_people: 1,
             
-
+            duringDay: [],
             from : null,
             to: null,
             dayText : '날짜를 선택해주세요.',
             disabledDays : [ {before : new Date()}],
             confirmDay : false,
             betweenDay: 0,
+            fixedDay : ''
         };
     }
 
@@ -83,36 +83,19 @@ class Main extends Component{
     }
     submitBtn = async() =>{
         // 옵션 
-        let duringDay = [];
+        let duringDay = this.state.duringDay;
         const minPrice = this.state.rangeValue.min;
         const maxPrice = this.state.rangeValue.max;
         const reservation = this.state.reservation;
         let type= [];
         const people = this.state.option_people;
 
-        if(!this.state.startDate || !this.state.endDate) return alert('입실 날짜와 퇴실 날짜를 입력해주세요.');
-
-
-        function changeDate(date, during){
-            let newDate = new Date(date);
-            newDate.setDate(newDate.getDate()+ during);
-
-            const dd = ("0" + newDate.getDate()).slice(-2);
-            const mm = ("0"+ (newDate.getMonth() + 1)).slice(-2);
-            const yy = newDate.getFullYear();
-            return Number(yy+mm+dd);
-        }
-
-        const betweenDay = (this.state.endDate.getTime() - this.state.startDate.getTime())/1000/60/60/24;
-        for(let i=0,len=betweenDay; i<len ;i++){
-            duringDay.push(changeDate(this.state.startDate, i));
-        }
-
         if(this.state.autoCamp) type.push('auto');
         if(this.state.glam) type.push('glam');
         if(this.state.karaban) type.push('karaban');
         
-
+        if(!this.state.from || !this.state.to) return alert('입실 날짜와 퇴실 날짜를 입력해주세요.');
+        if(type.length ===0) return alert('캠핑 타입을 선택해주세요.');
 
         let searchResult = await axios.post(`http://localhost:5000/search/option`, 
                                     {duringDay, minPrice,  maxPrice, reservation, type, people});
@@ -197,9 +180,26 @@ class Main extends Component{
 
     clickDate = () =>{
         this.refs.dayPicker.style.display = 'none';
+
+        function changeDate(date, during){
+            let newDate = new Date(date);
+            newDate.setDate(newDate.getDate()+ during);
+
+            const dd = ("0" + newDate.getDate()).slice(-2);
+            const mm = ("0"+ (newDate.getMonth() + 1)).slice(-2);
+            const yy = newDate.getFullYear();
+            return Number(yy+mm+dd);
+        }
+
         if(this.state.confirmDay){
+            let duringDay = [];
+            for(let i=0,len=this.state.betweenDay; i<len ;i++){
+                duringDay.push(changeDate(this.state.from, i));
+            }
+            console.log(duringDay);
             this.setState({
-                fixedDay : this.state.dayText
+                fixedDay : this.state.dayText,
+                duringDay : duringDay
             });
         }else{
             this.setState({
