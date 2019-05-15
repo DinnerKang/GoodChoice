@@ -14,8 +14,7 @@ class Main extends Component{
         super(props);
         this.state ={
             mainImg : require('../assets/main.jpg'),
-            startDate: '',
-            endDate: '',
+
             rangeValue: { min: 1, max: 30},
             reservation : false,
             autoCamp: false,
@@ -34,24 +33,6 @@ class Main extends Component{
         };
     }
 
-    handleChangeStart = (date) =>{
-        this.setState({
-            startDate: date,
-            endDate: '',
-            betweenDay: 0
-        });
-    }
-    handleChangeEnd = (date) =>{
-        this.setState({
-            endDate: date
-        }, function(){
-            // 숙박일수
-            if(this.state.startDate){
-                const betweenDay = (this.state.endDate.getTime() - this.state.startDate.getTime())/1000/60/60/24;
-                this.setState({ betweenDay : betweenDay });
-            }
-        });
-    }
     clickCheckbox = (e) =>{
         const name = e.target.name;
         let value;
@@ -70,14 +51,21 @@ class Main extends Component{
     }
     resetBtn = () =>{
         this.setState({
-            startDate : '',
-            endDate: '',
             rangeValue: { min: 1, max: 30},
             reservation : false,
             autoCamp: false,
             glam: false,
             karaban : false,
             option_people: 1,
+
+            duringDay: [],
+            from : null,
+            to: null,
+            dayText : '날짜를 선택해주세요.',
+            disabledDays : [ {before : new Date()}],
+            confirmDay : false,
+            betweenDay: 0,
+            fixedDay : ''
         });
 
     }
@@ -94,14 +82,15 @@ class Main extends Component{
         if(this.state.glam) type.push('glam');
         if(this.state.karaban) type.push('karaban');
         
-        if(!this.state.from || !this.state.to) return alert('입실 날짜와 퇴실 날짜를 입력해주세요.');
+        if(!this.state.fixedDay) return alert('입실 날짜와 퇴실 날짜를 입력해주세요.');
         if(type.length ===0) return alert('캠핑 타입을 선택해주세요.');
 
         let searchResult = await axios.post(`http://localhost:5000/search/option`, 
                                     {duringDay, minPrice,  maxPrice, reservation, type, people});
         console.log(searchResult);
     }
-    dayClick = () =>{
+
+    dayTextClick = () =>{
         if(this.refs.dayPicker.style.display === 'block'){
             this.refs.dayPicker.style.display = 'none'
         }else{
@@ -178,7 +167,7 @@ class Main extends Component{
         });
     }
 
-    clickDate = () =>{
+    confirmDayBtnClick = () =>{
         this.refs.dayPicker.style.display = 'none';
 
         function changeDate(date, during){
@@ -196,7 +185,6 @@ class Main extends Component{
             for(let i=0,len=this.state.betweenDay; i<len ;i++){
                 duringDay.push(changeDate(this.state.from, i));
             }
-            console.log(duringDay);
             this.setState({
                 fixedDay : this.state.dayText,
                 duringDay : duringDay
@@ -223,7 +211,7 @@ class Main extends Component{
                         <div className="option_list">
                             <div className="align_center option_date">
                                 <input type="text" className="DayPicker_text" placeholder="입실 날짜 ~ 퇴실 날짜" readOnly
-                                onClick={this.dayClick} value={this.state.fixedDay}/>
+                                onClick={this.dayTextClick} value={this.state.fixedDay}/>
                                 <div className="dayPicker_container" ref="dayPicker">
                                     <DayPicker
                                         ref="dayPickerComponent"
@@ -235,30 +223,8 @@ class Main extends Component{
                                         disabledDays={this.state.disabledDays}
                                     />
                                     <input type="button" className="option_btn option_datePicker" value={this.state.dayText} 
-                                        onClick={this.clickDate} disabled={!this.state.confirmDay || this.state.betweenDay ===0}/>
+                                        onClick={this.confirmDayBtnClick} disabled={!this.state.confirmDay || this.state.betweenDay ===0}/>
                                 </div>
-                                {/*
-                                <DatePicker
-                                    dateFormat="YYYY-MM-dd"
-                                    placeholderText="입실 날짜"
-                                    minDate={new Date()}
-                                    selected={this.state.startDate}
-                                    selectsStart
-                                    startDate={this.state.startDate}
-                                    endDate={this.state.endDate}
-                                    onChange={this.handleChangeStart}
-                                />
-                                ~
-                                <DatePicker
-                                    dateFormat="YYYY-MM-dd"
-                                    placeholderText="퇴실 날짜"
-                                    minDate={this.state.startDate}
-                                    selected={this.state.endDate}
-                                    selectsEnd
-                                    startDate={this.state.startDate}
-                                    endDate={this.state.endDate}
-                                    onChange={this.handleChangeEnd}
-        />*/}
                             </div>
                         </div>
                         <div className="option_list">

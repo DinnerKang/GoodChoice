@@ -37,12 +37,12 @@ exports.searchRooms = (req, res) =>{
 
 // Room 추가
 exports.insertRoom = (req, res) =>{
-    const name = '송파 방이';
-    const type = "auto";
+    const name = '노원 월계';
+    const type = "glam";
     const reservation = false;
     const maxPersonnel = 2;
-    const price = 40000;
-    const possibleDate = [20090601,20190602,20190603];
+    const price = 30000;
+    const possibleDate = [20190601,20190602,20190603,20190606,20190607,20190609];
     Room.create({
         name: name,
         type: type,
