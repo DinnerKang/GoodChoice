@@ -27,6 +27,8 @@ class Main extends Component{
 
             from : null,
             to: null,
+            dayText : '날짜를 선택해주세요.',
+            disabledDays : [ {before : new Date()}],
         };
     }
 
@@ -121,21 +123,55 @@ class Main extends Component{
             this.refs.dayPicker.style.display = 'block'
         }
     }
-    handleDayClick = (day) => {
-       
+    handleDayClick = (day, modifiers={}) => {
+        if (modifiers.disabled) {
+            return;
+          }
+        const week = ['일', '월', '화', '수','목','금','토'];
+        let maxDay = new Date(day);
+            maxDay = new Date(maxDay.setDate( maxDay.getDate() +10));
+        
+        
+        
         const range = DateUtils.addDayToRange(day, this.state);
-        console.log(range);
-        this.setState(range);
-       
+        this.setState(range, 
+            function(){
+                let firstDay, endDay;
+                if(this.state.from) firstDay = week[this.state.from.getDay()];
+                if(this.state.to) endDay = week[this.state.to.getDay()];
+                
+            if(!this.state.to && this.state.from){
+                this.setState({
+                    disabledDays : [{
+                        before : new Date(),
+                        after : maxDay
+                    }],
+                    dayText : `${this.state.from.getDate()}일 (${firstDay}) 체크인`
+                });
+            }else{
+                this.setState({
+                    disabledDays : [{
+                        before : new Date()
+                    }],
+                    dayText : `날짜를 선택해주세요.`
+                });
+            }
+            if(this.state.to && this.state.from){
+                const betweenDay = (this.state.to.getTime() - this.state.from.getTime())/1000/60/60/24;
+                
+                this.setState({
+                    dayText : `${this.state.from.getDate()}일 (${firstDay}) ~ ${this.state.to.getDate()}일 (${endDay}) / ${betweenDay}박`
+                })
+            }
+        });
+        /*
         if(range.from && !range.to){
             let nextDay = new Date(range.from);
             nextDay = new Date(nextDay.setDate( nextDay.getDate() +1));
-            
             this.setState({
                to : nextDay
             });
-            
-        }
+        }*/
     }
     
     render(){
@@ -245,16 +281,16 @@ class Main extends Component{
                         onClick={this.dayClick}/>
                         <div className="dayPicker_container" ref="dayPicker">
                             <DayPicker
+                                ref="dayPickerComponent"
                                 className="Selectable"
+                                
                                 numberOfMonths={this.props.numberOfMonths}
                                 selectedDays={[from, { from, to }]}
                                 modifiers={modifiers}
                                 onDayClick={this.handleDayClick}
-                                disabledDays={[
-                                    { before : new Date()}
-                                ]}
+                                disabledDays={this.state.disabledDays}
                             />
-                            <input type="button" />
+                            <input type="button" value={this.state.dayText} />
                         </div>
                         
                     </div>
