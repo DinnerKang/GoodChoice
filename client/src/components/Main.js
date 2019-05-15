@@ -149,7 +149,8 @@ class Main extends Component{
                     before : new Date(),
                     after : maxDay
                 }],
-                dayText : `${this.state.from.getDate()}일 (${firstDay}) 체크인`,
+                dayText : `${this.state.from.getMonth()+1}월 ${this.state.from.getDate()}일 (${firstDay}) 체크인`,
+                fixedDay : '',
                 confirmDay : false,
                 betweenDay : 0
             });
@@ -159,7 +160,7 @@ class Main extends Component{
             let firstDay, endDay;
             if(this.state.from) firstDay = week[this.state.from.getDay()];
             if(this.state.to) endDay = week[this.state.to.getDay()];
-            
+
             // 체크인만 선택 + 체크아웃 선택 X
             if(this.state.from && !this.state.to){
                 this.setState({
@@ -167,7 +168,7 @@ class Main extends Component{
                         before : new Date(),
                         after : maxDay
                     }],
-                    dayText : `${this.state.from.getDate()}일 (${firstDay}) 체크인`
+                    dayText : `${this.state.from.getMonth()+1}월 ${this.state.from.getDate()}일 (${firstDay}) 체크인`
                 });
             }else{
                 this.setState({
@@ -181,13 +182,14 @@ class Main extends Component{
             if(this.state.from && this.state.to){
                 const betweenDay = (this.state.to.getTime() - this.state.from.getTime())/1000/60/60/24;
                 this.setState({
-                    dayText : `${this.state.from.getDate()}일 (${firstDay}) ~ ${this.state.to.getDate()}일 (${endDay}) / ${betweenDay}박 ${betweenDay+1}일`,
+                    dayText : `${this.state.from.getMonth()+1}월 ${this.state.from.getDate()}일 (${firstDay}) ~ ${this.state.to.getMonth()+1}월 ${this.state.to.getDate()}일 (${endDay}) / ${betweenDay}박 ${betweenDay+1}일`,
                     confirmDay : true,
                     betweenDay : betweenDay
                 });
             }else{
                 this.setState({
-                    confirmDay : false
+                    confirmDay : false,
+                    fixedDay : '',
                 });
             }
         });
