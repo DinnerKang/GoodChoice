@@ -23,12 +23,14 @@ class Main extends Component{
             glam: false,
             karaban : false,
             option_people: 1,
-            betweenDay: 0,
+            
 
             from : null,
             to: null,
             dayText : '날짜를 선택해주세요.',
             disabledDays : [ {before : new Date()}],
+            confirmDay : false,
+            betweenDay: 0,
         };
     }
 
@@ -123,24 +125,43 @@ class Main extends Component{
             this.refs.dayPicker.style.display = 'block'
         }
     }
+
     handleDayClick = (day, modifiers={}) => {
+        // 비활성화 클릭 이벤트 금지
         if (modifiers.disabled) {
             return;
           }
+        
         const week = ['일', '월', '화', '수','목','금','토'];
         let maxDay = new Date(day);
-            maxDay = new Date(maxDay.setDate( maxDay.getDate() +10));
-        
-        
+            maxDay = new Date(maxDay.setDate( maxDay.getDate() +9));
         
         const range = DateUtils.addDayToRange(day, this.state);
-        this.setState(range, 
-            function(){
-                let firstDay, endDay;
-                if(this.state.from) firstDay = week[this.state.from.getDay()];
-                if(this.state.to) endDay = week[this.state.to.getDay()];
-                
-            if(!this.state.to && this.state.from){
+        
+        // 두가지 전부 선택되있는데 다른걸 클릭하면
+        if(this.state.from && this.state.to){
+            let firstDay;
+            if(this.state.from) firstDay = week[this.state.from.getDay()];
+            return this.setState({
+                from : day,
+                to : '',
+                disabledDays : [{
+                    before : new Date(),
+                    after : maxDay
+                }],
+                dayText : `${this.state.from.getDate()}일 (${firstDay}) 체크인`,
+                confirmDay : false,
+                betweenDay : 0
+            });
+        }
+
+        this.setState(range, () =>{
+            let firstDay, endDay;
+            if(this.state.from) firstDay = week[this.state.from.getDay()];
+            if(this.state.to) endDay = week[this.state.to.getDay()];
+            
+            // 체크인만 선택 + 체크아웃 선택 X
+            if(this.state.from && !this.state.to){
                 this.setState({
                     disabledDays : [{
                         before : new Date(),
@@ -156,36 +177,39 @@ class Main extends Component{
                     dayText : `날짜를 선택해주세요.`
                 });
             }
-            if(this.state.to && this.state.from){
+            // 체크인 + 체크아웃 전부 선택
+            if(this.state.from && this.state.to){
                 const betweenDay = (this.state.to.getTime() - this.state.from.getTime())/1000/60/60/24;
-                
                 this.setState({
-                    dayText : `${this.state.from.getDate()}일 (${firstDay}) ~ ${this.state.to.getDate()}일 (${endDay}) / ${betweenDay}박`
-                })
+                    dayText : `${this.state.from.getDate()}일 (${firstDay}) ~ ${this.state.to.getDate()}일 (${endDay}) / ${betweenDay}박 ${betweenDay+1}일`,
+                    confirmDay : true,
+                    betweenDay : betweenDay
+                });
+            }else{
+                this.setState({
+                    confirmDay : false
+                });
             }
         });
-        /*
-        if(range.from && !range.to){
-            let nextDay = new Date(range.from);
-            nextDay = new Date(nextDay.setDate( nextDay.getDate() +1));
+    }
+
+    clickDate = () =>{
+        this.refs.dayPicker.style.display = 'none';
+        if(this.state.confirmDay){
             this.setState({
-               to : nextDay
+                fixedDay : this.state.dayText
             });
-        }*/
+        }else{
+            this.setState({
+                fixedDay : ''
+            });
+        }
     }
     
     render(){
-        let duringDay;
-        if(this.state.betweenDay ===0){
-            duringDay = '';
-        }else{
-            duringDay = <label className="betweenDay_label">{this.state.betweenDay} 박 {this.state.betweenDay+1} 일</label>
-        }
-
+        
         const { from, to } = this.state;
         const modifiers = { start: from, end: to };
-
-
 
         return(
             <Fragment>
@@ -196,7 +220,22 @@ class Main extends Component{
                     <article className="option_container">
                         <div className="option_list">
                             <div className="align_center option_date">
-                                {duringDay}
+                                <input type="text" className="DayPicker_text" placeholder="입실 날짜 ~ 퇴실 날짜" readOnly
+                                onClick={this.dayClick} value={this.state.fixedDay}/>
+                                <div className="dayPicker_container" ref="dayPicker">
+                                    <DayPicker
+                                        ref="dayPickerComponent"
+                                        className="Selectable"
+                                        numberOfMonths={this.props.numberOfMonths}
+                                        selectedDays={[from, { from, to }]}
+                                        modifiers={modifiers}
+                                        onDayClick={this.handleDayClick}
+                                        disabledDays={this.state.disabledDays}
+                                    />
+                                    <input type="button" className="option_btn option_datePicker" value={this.state.dayText} 
+                                        onClick={this.clickDate} disabled={!this.state.confirmDay || this.state.betweenDay ===0}/>
+                                </div>
+                                {/*
                                 <DatePicker
                                     dateFormat="YYYY-MM-dd"
                                     placeholderText="입실 날짜"
@@ -217,7 +256,7 @@ class Main extends Component{
                                     startDate={this.state.startDate}
                                     endDate={this.state.endDate}
                                     onChange={this.handleChangeEnd}
-                                />
+        />*/}
                             </div>
                         </div>
                         <div className="option_list">
@@ -276,24 +315,6 @@ class Main extends Component{
                         <input className="option_btn" type="button" value="초기화" onClick={this.resetBtn}/>
                         <input className="option_btn" type="button" value="적용" onClick={this.submitBtn}/>
                     </article>
-                    <div>
-                        <input type="text" className="DayPicker_text" placeholder="입실 날짜 ~ 퇴실 날짜" readOnly
-                        onClick={this.dayClick}/>
-                        <div className="dayPicker_container" ref="dayPicker">
-                            <DayPicker
-                                ref="dayPickerComponent"
-                                className="Selectable"
-                                
-                                numberOfMonths={this.props.numberOfMonths}
-                                selectedDays={[from, { from, to }]}
-                                modifiers={modifiers}
-                                onDayClick={this.handleDayClick}
-                                disabledDays={this.state.disabledDays}
-                            />
-                            <input type="button" value={this.state.dayText} />
-                        </div>
-                        
-                    </div>
                 </section>
             </Fragment>
         )

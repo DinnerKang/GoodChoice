@@ -28,14 +28,6 @@ ul, li{
 .option_date{
     position: relative;
 }
-.betweenDay_label{
-    position: absolute;
-    top: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.7rem;
-    font-weight: bold;
-}
 .price_label{
     position: absolute;
     top: 5px;
@@ -93,9 +85,20 @@ input[type="text"]{
     color: #f7323f;
 }
 
-
+.DayPicker_text{
+    width: 272px;
+    height: 30px;
+    border: 1px solid #f7323f !important;
+}
 .dayPicker_container{
     display : none;
+    position: absolute;
+    top: 80px;
+}
+.option_datePicker{
+    width: 272px;
+    height: 30px;
+    margin: 0;
 }
 .Selectable .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
     background-color: #f0f8ff !important;
