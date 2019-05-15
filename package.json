@@ -1,5 +1,5 @@
 {
-  "name": "gram",
+  "name": "GoodChoice",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DinnerKang/gram.git"
+    "url": "git+https://github.com/DinnerKang/GoodChoice.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DinnerKang/gram/issues"
+    "url": "https://github.com/DinnerKang/GoodChoice/issues"
   },
-  "homepage": "https://github.com/DinnerKang/gram#readme",
+  "homepage": "https://github.com/DinnerKang/GoodChoice#readme",
   "dependencies": {
     "body-parse": "^0.1.0",
     "concurrently": "^4.1.0",
