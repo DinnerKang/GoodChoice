@@ -2,6 +2,9 @@ import React, { Component, Fragment }from 'react';
 import DatePicker from "react-datepicker";
 import InputRange from 'react-input-range';
 
+import DayPicker, { DateUtils  } from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
+
 import './Main.css';
 import "react-datepicker/dist/react-datepicker.css";
 import "react-input-range/lib/css/index.css";
@@ -20,7 +23,10 @@ class Main extends Component{
             glam: false,
             karaban : false,
             option_people: 1,
-            betweenDay: 0
+            betweenDay: 0,
+
+            from : undefined,
+            to: undefined,
         };
     }
 
@@ -107,7 +113,11 @@ class Main extends Component{
         let searchResult = await axios.post(`http://localhost:5000/search/option`, 
                                     {duringDay, minPrice,  maxPrice, reservation, type, people});
         console.log(searchResult);
-        
+    }
+
+    handleDayClick = (day) => {
+        const range = DateUtils.addDayToRange(day, this.state);
+        this.setState(range);
     }
     
     render(){
@@ -117,6 +127,12 @@ class Main extends Component{
         }else{
             duringDay = <label className="betweenDay_label">{this.state.betweenDay} 박 {this.state.betweenDay+1} 일</label>
         }
+
+        const { from, to } = this.state;
+        const modifiers = { start: from, end: to };
+
+
+
         return(
             <Fragment>
                 <header className="main_header">
@@ -163,7 +179,7 @@ class Main extends Component{
                         <div className="option_list">
                             <div className="align_center">
                                     <input type="checkbox" value="reservation" name="reservation" id="reservation" 
-                                    onClick={this.clickCheckbox} checked={this.state.reservation}/>
+                                    onClick={this.clickCheckbox} checked={this.state.reservation} />
                                     <label  className="option_type" htmlFor="reservation" >예약 가능</label>
                             </div>
                         </div>
@@ -206,6 +222,16 @@ class Main extends Component{
                         <input className="option_btn" type="button" value="초기화" onClick={this.resetBtn}/>
                         <input className="option_btn" type="button" value="적용" onClick={this.submitBtn}/>
                     </article>
+                    <div>
+                        <input type="text" className="DayPicker_text" placeholder="입실 날짜 ~ 퇴실 날짜" readOnly/>
+                        <DayPicker 
+                            className="Selectable"
+                            numberOfMonths={this.props.numberOfMonths}
+                            selectedDays={[from, { from, to }]}
+                            modifiers={modifiers}
+                            onDayClick={this.handleDayClick} 
+                        />
+                    </div>
                 </section>
             </Fragment>
         )
