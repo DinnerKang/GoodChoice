@@ -101,7 +101,6 @@ class Main extends Component{
         const data = this.state.data;
         let searchResult = [];
         let temp = false;
-
         for(let i=0, len=data.length; i<len; i++){
             if(type.indexOf(data[i].type) > -1 && data[i].reservation === reservation
                 && data[i].maxPersonnel <= people && data[i].price <= maxPrice*10000 && data[i].price >= minPrice*10000){

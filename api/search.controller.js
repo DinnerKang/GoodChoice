@@ -29,7 +29,6 @@ exports.searchRooms = (req, res) =>{
         if(err) return res.status(500).send('Room 검색 실패');
         return res.status(200).send(docs);
     });
-    
 }
 
 // Room 추가
