@@ -34,6 +34,16 @@ class Main extends Component{
             searchResult: []
         };
     }
+    componentWillMount(){
+        this.initResult();
+    }
+    initResult = async() =>{
+        let result = await axios.get(`http://localhost:5000/search`);
+        console.log('초기 화면 : ', result.data);
+        this.setState({
+            searchResult : result.data
+        });
+    }
 
     clickCheckbox = (e) =>{
         const name = e.target.name;
@@ -89,10 +99,10 @@ class Main extends Component{
 
         let searchResult = await axios.post(`http://localhost:5000/search/option`, 
                                     {duringDay, minPrice,  maxPrice, reservation, type, people});
-        console.log(searchResult);
-        await this.setState({
+        console.log('검색 결과 : ', searchResult.data);
+        this.setState({
             searchResult : searchResult.data
-        })
+        });
     }
 
     dayTextClick = () =>{
@@ -200,8 +210,8 @@ class Main extends Component{
             });
         }
     }
+    
     changeResultDate = (date) =>{
-        console.log(date);
         let Month = String(date).substring(4,6);
         let Day = String(date).substring(6,8);
 
@@ -211,12 +221,18 @@ class Main extends Component{
         if(Number(Day) <10){
             Day = String(Day).slice(-1);
         }
-
         return Month+'월 ' + Day +'일';
+    }
+    showPossibleDate = (idx) =>{
+        const area = 'area_'+idx;
+        if(this.refs[area].style.display === 'block'){
+            this.refs[area].style.display = 'none'
+        }else{
+            this.refs[area].style.display = 'block'
+        };
     }
     
     render(){
-        
         const { from, to } = this.state;
         const modifiers = { start: from, end: to };
 
@@ -313,7 +329,14 @@ class Main extends Component{
                                    <div className="result_common">예약 가능 : {c.reservation ? '가능' : '불가능'}</div>
                                    <div className="result_common">최대 인원 : {c.maxPersonnel}</div>
                                    <div className="result_common">가격(1박) : {c.price}</div>
-                                   <div className="result_common">예약 가능 일자{c.possibleDate.map( (date, id) =><div key={id}>{this.changeResultDate(date)}</div>)}</div>
+                                   <div className="result_common">숙박 가능 일자 : <span className="show_possibleDate" onClick={this.showPossibleDate.bind(this, idx)}>보기</span>
+                                        <div className="possibleDate_area" ref={'area_'+idx}>
+                                            {c.possibleDate.map( (date, id) =>
+                                                <div className="result_possibleDate" key={id}>{this.changeResultDate(date)}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
                                 </li>
                             )}
                         </ul>

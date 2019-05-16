@@ -19,7 +19,6 @@ exports.searchRooms = (req, res) =>{
     const roomType = req.body.type;
     const roomMaxPersonnel = req.body.people;
     
-    
     Room.find({
         possibleDate : {$all : roomDuringDay },
         price : {$gte :roomMinPrice, $lte: roomMaxPrice},

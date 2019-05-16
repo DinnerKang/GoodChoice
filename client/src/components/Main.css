@@ -130,18 +130,38 @@ input[type="text"]{
   }
   .result_list{
       width: 200px;
-      height: 300px;
+      height: 100%;
       padding: 0 10px;
       margin-right: 50px;
       margin-bottom: 30px;
       border: 1px solid #000;
       float: left;
       box-sizing: border-box;
+      background-color: #fff;
   }
   .result_list:nth-child(5n){
-      margin:0;
+      margin-right:0;
   }
   .result_common{
       margin: 10px 0;
-
+  }
+  .result_possibleDate{
+    background-color: #f7323f;
+    color:#fff;
+    border:1px solid #f7323f;
+    margin: 5px 15px;
+    float: left;
+    font-size: 12px;
+    width: 50px;
+    text-align: center;
+  }
+  .show_possibleDate{
+      position: relative;
+      cursor: pointer;
+  }
+  .possibleDate_area{
+      position: absolute;
+      width: 170px;
+      background-color: #fff;
+      display: none;
   }
