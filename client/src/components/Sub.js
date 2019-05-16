@@ -82,6 +82,8 @@ class Main extends Component{
         });
 
     }
+    
+
     submitBtn = async() =>{
         // 옵션 
         let duringDay = this.state.duringDay;
@@ -99,23 +101,24 @@ class Main extends Component{
         if(type.length ===0) return alert('캠핑 타입을 선택해주세요.');
 
         const data = this.state.data;
+        
         let searchResult = [];
-        let temp = false;
+
         for(let i=0, len=data.length; i<len; i++){
             if(type.indexOf(data[i].type) > -1 && data[i].reservation === reservation
-                && data[i].maxPersonnel <= people && data[i].price <= maxPrice*10000 && data[i].price >= minPrice*10000){
-                    
-                    for(let a=0,len2=duringDay.length; a<len2; a++){
-                        if(data[i].possibleDate.indexOf(duringDay[a]) >-1){
-                            temp = true;
-                        }else{
-                            temp = false;
-                        }
-                    }
-                    if(temp === true ) searchResult.push(data[i]);
+                && data[i].maxPersonnel <= people && data[i].price <= maxPrice*10000 && data[i].price >= minPrice*10000
+                 ){
+                    let dayFilter =  intersect(data[i].possibleDate, duringDay);
+                    if(JSON.stringify(dayFilter) === JSON.stringify(duringDay)) searchResult.push(data[i]);
             }
         }
-
+        // 교집합 함수
+        function intersect(a, b) {
+            var tmp={}, res=[];
+            for(var i=0;i<a.length;i++) tmp[a[i]]=1;
+            for(var i=0;i<b.length;i++) if(tmp[b[i]]) res.push(b[i]);
+            return res;
+          }
          
         console.log('검색 결과 : ', searchResult);
         this.setState({
