@@ -29,7 +29,9 @@ class Main extends Component{
             disabledDays : [ {before : new Date()}],
             confirmDay : false,
             betweenDay: 0,
-            fixedDay : ''
+            fixedDay : '',
+
+            searchResult: []
         };
     }
 
@@ -88,6 +90,9 @@ class Main extends Component{
         let searchResult = await axios.post(`http://localhost:5000/search/option`, 
                                     {duringDay, minPrice,  maxPrice, reservation, type, people});
         console.log(searchResult);
+        await this.setState({
+            searchResult : searchResult.data
+        })
     }
 
     dayTextClick = () =>{
@@ -195,6 +200,20 @@ class Main extends Component{
             });
         }
     }
+    changeResultDate = (date) =>{
+        console.log(date);
+        let Month = String(date).substring(4,6);
+        let Day = String(date).substring(6,8);
+
+        if(Number(Month) <10){
+            Month = String(Month).slice(-1);
+        }
+        if(Number(Day) <10){
+            Day = String(Day).slice(-1);
+        }
+
+        return Month+'월 ' + Day +'일';
+    }
     
     render(){
         
@@ -282,6 +301,22 @@ class Main extends Component{
                     <article className="button_container">
                         <input className="option_btn" type="button" value="초기화" onClick={this.resetBtn}/>
                         <input className="option_btn" type="button" value="적용" onClick={this.submitBtn}/>
+                    </article>
+                </section>
+                <section>
+                    <article className="result_container">
+                        <ul>
+                            {this.state.searchResult.map( (c, idx) =>
+                                <li className="result_list" key={idx}>
+                                   <div className="result_common">이름 : {c.name}</div>
+                                   <div className="result_common">캠핑 유형 : {c.type}</div>
+                                   <div className="result_common">예약 가능 : {c.reservation ? '가능' : '불가능'}</div>
+                                   <div className="result_common">최대 인원 : {c.maxPersonnel}</div>
+                                   <div className="result_common">가격(1박) : {c.price}</div>
+                                   <div className="result_common">예약 가능 일자{c.possibleDate.map( (date, id) =><div key={id}>{this.changeResultDate(date)}</div>)}</div>
+                                </li>
+                            )}
+                        </ul>
                     </article>
                 </section>
             </Fragment>

@@ -1,7 +1,5 @@
 
 
-// 가데이터
-let modelData = require('../models/data.json');
 const Room = require('../models/Room');
 
 // 전체 데이터 검색
@@ -37,19 +35,23 @@ exports.searchRooms = (req, res) =>{
 
 // Room 추가
 exports.insertRoom = (req, res) =>{
-    const name = '노원 월계';
-    const type = "glam";
-    const reservation = false;
-    const maxPersonnel = 2;
-    const price = 30000;
-    const possibleDate = [20190601,20190602,20190603,20190606,20190607,20190609];
+    const data = {
+        "name" : "도봉산 글램",
+        "type" : "glam",
+        "reservation" : true,
+        "maxPersonnel" : 3,
+        "possibleDate" : [20190601,20190602,20190603,20190604,20190605,20190606,20190607,20190608,20190609,20190610],
+        "price" : 60000
+    }
+    
+    
     Room.create({
-        name: name,
-        type: type,
-        reservation :  reservation,
-        maxPersonnel : maxPersonnel,
-        possibleDate : possibleDate,
-        price : price
+        name: data.name,
+        type: data.type,
+        reservation :  data.reservation,
+        maxPersonnel : data.maxPersonnel,
+        possibleDate : data.possibleDate,
+        price : data.price
     }, function(err, docs){
         if(err) return res.status(500).send('Room 생성 실패');
         return res.status(200).send('생성 성공');

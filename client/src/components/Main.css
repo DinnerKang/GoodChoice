@@ -17,7 +17,7 @@ ul, li{
     height: 80px;
     border : 1px solid #f7323f;
     border-top : 10px #f7323f solid;
-    margin: 50px auto 20px;
+    margin: 30px auto;
     border-radius: 15px;
 }
 .option_list{
@@ -93,7 +93,8 @@ input[type="text"]{
 .dayPicker_container{
     display : none;
     position: absolute;
-    top: 80px;
+    top: 81px;
+    background-color: #fff;
 }
 .option_datePicker{
     width: 272px;
@@ -117,4 +118,30 @@ input[type="text"]{
   }
   .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside){
     background-color: #f7323f !important;
+  }
+
+
+
+  .result_container{
+    width: 1200px;
+    height: 100%;
+    margin: 30px auto;
+    border-radius: 15px;
+  }
+  .result_list{
+      width: 200px;
+      height: 300px;
+      padding: 0 10px;
+      margin-right: 50px;
+      margin-bottom: 30px;
+      border: 1px solid #000;
+      float: left;
+      box-sizing: border-box;
+  }
+  .result_list:nth-child(5n){
+      margin:0;
+  }
+  .result_common{
+      margin: 10px 0;
+
   }

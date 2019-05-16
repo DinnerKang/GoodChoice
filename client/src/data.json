@@ -1,0 +1,137 @@
+[
+    {
+        "name" : "잠실 첼로",
+        "type" : "auto",
+        "reservation" : true,
+        "maxPersonnel" : 4,
+        "possibleDate" : [20190602,20190603],
+        "price" : 30000
+    },
+    {
+        "name" : "잠실 롯데",
+        "type" : "auto",
+        "reservation" : true,
+        "maxPersonnel" : 5,
+        "possibleDate" : [20190602,20190603,20190604,20190605,20190606,],
+        "price" : 50000
+    },
+    {
+        "name" : "잠실 백화점",
+        "type" : "auto",
+        "reservation" : true,
+        "maxPersonnel" : 3,
+        "possibleDate" : [20190601,20190602,20190603,20190604,20190605,20190606,20190607,20190608],
+        "price" : 50000
+    },
+    {
+        "name" : "잠실 타워",
+        "type" : "glam",
+        "reservation" : true,
+        "maxPersonnel" : 4,
+        "possibleDate" : [20190601,20190602,20190603,20190605,20190606,20190607,20190608,20190609],
+        "price" : 100000
+    },
+    {
+        "name" : "잠실 글램",
+        "type" : "glam",
+        "reservation" : false,
+        "maxPersonnel" : 4,
+        "possibleDate" : [20190601,20190602,20190603,20190605,20190606,20190607,20190608,20190609],
+        "price" : 40000
+    },
+    {
+        "name" : "노원 글램",
+        "type" : "glam",
+        "reservation" : false,
+        "maxPersonnel" : 2,
+        "possibleDate" : [20190601,20190602,20190603,20190604,20190605,20190606,20190607,20190608,20190609,20190610],
+        "price" : 50000
+    },
+    {
+        "name" : "도봉산 글램",
+        "type" : "glam",
+        "reservation" : true,
+        "maxPersonnel" : 3,
+        "possibleDate" : [20190601,20190602,20190603,20190604,20190605,20190606,20190607,20190608,20190609,20190610],
+        "price" : 60000
+    },
+    {
+        "name" : "건대 뮤",
+        "type" : "karaban",
+        "reservation" : false,
+        "maxPersonnel" : 2,
+        "possibleDate" : [20190602],
+        "price" : 35000
+    },
+    {
+        "name" : "홍대 홍",
+        "type" : "karaban",
+        "reservation" : false,
+        "maxPersonnel" : 3,
+        "possibleDate" : [20190601,20190602],
+        "price" : 35000
+    },
+    {
+        "name" : "건대 테마",
+        "type" : "auto",
+        "reservation" : false,
+        "maxPersonnel" : 8,
+        "possibleDate" : [20190601,20190602,20190604,20190605],
+        "price" : 30000
+    },
+    {
+        "name" : "노원 탑",
+        "type" : "auto",
+        "reservation" : true,
+        "maxPersonnel" : 2,
+        "possibleDate" : [20190601,20190602,20190604,20190605],
+        "price" : 20000
+    },{
+        "name" : "군자 함",
+        "type" : "auto",
+        "reservation" : true,
+        "maxPersonnel" : 2,
+        "possibleDate" : [20190601,20190602,20190605],
+        "price" : 40000
+    },
+    {
+        "name" : "송파 방이",
+        "type" : "auto",
+        "reservation" : false,
+        "maxPersonnel" : 2,
+        "possibleDate" : [20190601,20190602,20190603],
+        "price" : 40000
+    },
+    {
+        "name" : "송파 방이2",
+        "type" : "glam",
+        "reservation" : true,
+        "maxPersonnel" : 2,
+        "possibleDate" : [20190601,20190602,20190603,20190604,20190605],
+        "price" : 40000
+    },
+    {
+        "name" : "송파 올림픽공원",
+        "type" : "glam",
+        "reservation" : true,
+        "maxPersonnel" : 3,
+        "possibleDate" : [20190601,20190602,20190603,20190605],
+        "price" : 50000
+    },
+    {
+        "name" : "송파 몽촌토성",
+        "type" : "auto",
+        "reservation" : true,
+        "maxPersonnel" : 4,
+        "possibleDate" : [20190601,20190602,20190603,20190605,20190606,20190607,20190608,20190609,20190610],
+        "price" : 40000
+    },
+    {
+        "name" : "송파 오금",
+        "type" : "auto",
+        "reservation" : true,
+        "maxPersonnel" : 4,
+        "possibleDate" : [20190601,20190602,20190603,20190605,20190606,20190607,20190608,20190609,20190610],
+        "price" : 40000
+    }
+]
